@@ -123,8 +123,8 @@ elif clustering_method == "Hierarchical":
 
 elif clustering_method == "DBSCAN":
     st.sidebar.header("DBSCAN Parameters")
-    eps_input = st.sidebar.slider("Epsilon Values (eps)", min_value=0.1, max_value=2.0, value=0.5, format="%.1f", step=0.1)
-    min_samples_input = st.sidebar.slider("Min Samples", min_value=4, max_value=20, value=5, step=1)
+    eps_input = st.sidebar.slider("Epsilon Values (eps)", min_value=0.1, max_value=5.0, value=2.065997806552059, format="%.1f", step=0.1)
+    min_samples_input = st.sidebar.slider("Min Samples", min_value=4, max_value=20, value=16, step=1)
     algorithm_input = st.sidebar.selectbox("Algorithm", ["brute", "auto", "ball_tree", "kd_tree"])
 
 
@@ -170,7 +170,7 @@ elif clustering_method == "Spectral":
     st.pyplot(plt)
 
     # Calculate and display silhouette score
-    silhouette_avg = silhouette_score(df_pca[['PC1', 'PC2']], dbscan_labels)
+    silhouette_avg = silhouette_score(df_pca[['PC1', 'PC2']], spectral_labels)
     st.subheader("Silhouette Score for Spectral Clustering")
     st.write(f"Silhouette Score: {silhouette_avg:.4f}")
   
