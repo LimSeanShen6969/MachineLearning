@@ -142,14 +142,14 @@ elif clustering_method == "DBSCAN":
     # Visualization of DBSCAN clustering
     st.subheader("DBSCAN Clustering on PCA Results")
     plt.figure(figsize=(10, 8))
-    sns.scatterplot(x='PC1', y='PC2', hue='DBSCAN_Labels', data=df_pca, palette='viridis', legend='full')
+    sns.scatterplot(x='PC1', y='PC2', hue='DBSCAN_Labels', data=df_pca, palette='viridis')
     plt.title('DBSCAN Clustering on Principal Components')
     st.pyplot(plt)
 
     # Calculate and display silhouette score
-    # silhouette_avg = silhouette_score(df_pca[['PC1', 'PC2']], dbscan_labels)
-    # st.subheader("Silhouette Score for DBSCAN Clustering")
-    # st.write(f"Silhouette Score: {silhouette_avg:.4f}")
+    silhouette_avg = silhouette_score(df_pca[['PC1', 'PC2']], dbscan_labels)
+    st.subheader("Silhouette Score for DBSCAN Clustering")
+    st.write(f"Silhouette Score: {silhouette_avg:.4f}")
 
 elif clustering_method == "Spectral":
     st.sidebar.header("DBSCAN Parameters")
