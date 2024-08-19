@@ -22,7 +22,7 @@ st.title("Clustering For FIFA 19")
 
 # Sidebar for clustering parameters
 st.sidebar.header("Clustering Parameters")
-clustering_method = st.sidebar.selectbox("Choose Clustering Method", ["K-means", "GMM", "Hierarchical"])
+clustering_method = st.sidebar.selectbox("Choose Clustering Method", ["K-means", "GMM", "Hierarchical", "DBSCAN", "Spectral"])
 
 if clustering_method == "K-means":
     st.sidebar.header("K-means Parameters")
@@ -117,6 +117,55 @@ elif clustering_method == "Hierarchical":
     # Calculate and display silhouette score
     silhouette_avg = silhouette_score(df_pca[['PC1', 'PC2']], hierarchical_labels)
     st.subheader("Silhouette Score for Hierarchical Clustering")
+    st.write(f"Silhouette Score: {silhouette_avg:.4f}")
+
+elif clustering_method == "DBSCAN":
+    st.sidebar.header("DBSCAN Parameters")
+    eps_input = st.sidebar.slider("Epsilon Values (eps)", min_value=0.1, max_value=2.0, value=0.5, format="%.1f", step=0.1)
+    min_samples_input = st.sidebar.slider("Min Samples", min_value=4, max_value=20, value=5, step=1)
+    algorithm_input = st.sidebar.selectbox("Algorithm", ["brute", "auto", "ball_tree", "kd_tree"])
+
+
+    # Run Hierarchical clustering with selected parameters
+    dbscan = DBSCAN(
+        eps=eps_input, 
+        min_samples=min_samples_input,
+        algorithm=algorithm_input)
+
+    dbscan_labels=dbscan.fit_predict(df_pca[['PC1', 'PC2']])
+    df_pca['DBSCAN_Labels'] = dbscan_labels + 1
+
+    # Visualization of DBSCAN clustering
+    st.subheader("DBSCAN Clustering on PCA Results")
+    plt.figure(figsize=(10, 8))
+    sns.scatterplot(x='PC1', y='PC2', hue='DBSCAN_Labels', data=df_pca, palette='viridis', legend='full')
+    plt.title('DBSCAN Clustering on Principal Components')
+    st.pyplot(plt)
+
+    # Calculate and display silhouette score
+    silhouette_avg = silhouette_score(df_pca[['PC1', 'PC2']], dbscan_labels)
+    st.subheader("Silhouette Score for DBSCAN Clustering")
+    st.write(f"Silhouette Score: {silhouette_avg:.4f}")
+
+elif clustering_method == "Spectral":
+    st.sidebar.header("DBSCAN Parameters")
+    affinity_input = st.sidebar.selectbox("Affinity", ["nearest_neighbors", "rbf"])
+
+    # Run Hierarchical clustering with selected parameters
+    spectral = SpectralClustering(n_clusters=4, affinity='nearest_neighbors', random_state=42)
+    spectral_labels = spectral.fit_predict(df_pca[['PC1', 'PC2']])
+    df_pca['Spectral_Labels'] = spectral_labels + 1
+
+    # Visualization of Spectral clustering
+    st.subheader("Spectral Clustering on PCA Results")
+    plt.figure(figsize=(10, 8))
+    sns.scatterplot(x='PC1', y='PC2', hue='Spectral_Labels', data=df_pca, palette='viridis')
+    plt.title('Spectral Clustering on Principal Components')
+    st.pyplot(plt)
+
+    # Calculate and display silhouette score
+    silhouette_avg = silhouette_score(df_pca[['PC1', 'PC2']], dbscan_labels)
+    st.subheader("Silhouette Score for Spectral Clustering")
     st.write(f"Silhouette Score: {silhouette_avg:.4f}")
   
 
