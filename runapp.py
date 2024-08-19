@@ -22,7 +22,7 @@ st.title("Clustering For FIFA 19")
 
 # Sidebar for clustering parameters
 st.sidebar.header("Clustering Parameters")
-clustering_method = st.sidebar.selectbox("Choose Clustering Method", ["K-means", "GMM"])
+clustering_method = st.sidebar.selectbox("Choose Clustering Method", ["K-means", "GMM", "Hierarchical"])
 
 if clustering_method == "K-means":
     st.sidebar.header("K-means Parameters")
@@ -90,6 +90,33 @@ elif clustering_method == "GMM":
     # Calculate and display silhouette score
     silhouette_avg = silhouette_score(df_pca[['PC1', 'PC2']], gmm_labels)
     st.subheader("Silhouette Score for GMM Clustering")
+    st.write(f"Silhouette Score: {silhouette_avg:.4f}")
+
+elif clustering_method == "Hierarchical":
+    st.sidebar.header("Hierarchical Parameters")
+    n_cluster_input = st.sidebar.slider("Number of clusters (n_clusters)", min_value=3, max_value=11, value=4, step=1)
+    linkage_input = st.sidebar.selectbox("Linkage", ["average", "ward", "complete", "single"])
+    metric_input = st.sidebar.selectbox("Metric", ["11", "12", "euclidean", "manhanttan", "cosine"])
+
+
+    # Run Hierarchical clustering with selected parameters
+    hierarchical = AgglomerativeClustering(
+        n_clusters=n_cluster_input,
+        linkage=linkage_input,
+        metric=metric_input)
+    hierarchical_labels = hierarchical.fit_predict(df_pca[['PC1', 'PC2']])
+    df_pca['Hierarchical_Labels'] = hierarchical_labels + 1
+
+    # Visualization of Hierarchical clustering
+    st.subheader("Hierarchical Clustering on PCA Results")
+    plt.figure(figsize=(10, 8))
+    sns.scatterplot(x='PC1', y='PC2', hue='Hierarchical_Labels', data=df_pca, palette='viridis')
+    plt.title('Hierarchical Clustering on Principal Components')
+    st.pyplot(plt)
+
+    # Calculate and display silhouette score
+    silhouette_avg = silhouette_score(df_pca[['PC1', 'PC2']], hierarchical_labels)
+    st.subheader("Silhouette Score for Hierarchical Clustering")
     st.write(f"Silhouette Score: {silhouette_avg:.4f}")
   
 
