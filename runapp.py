@@ -5,6 +5,7 @@ import seaborn as sns
 from sklearn.decomposition import PCA
 from sklearn.cluster import KMeans
 from sklearn.mixture import GaussianMixture
+from sklearn.metrics import silhouette_score
 
 # Load the preset datasets
 df = pd.read_csv('df.csv')
@@ -17,7 +18,7 @@ pca_result = pca.fit_transform(df_scaled)
 df_pca = pd.DataFrame(pca_result, columns=['PC1', 'PC2'])
 
 # Streamlit app title
-st.title("Clustering with PCA Visualization")
+st.title("Clustering For FIFA 19")
 
 # Sidebar for clustering parameters
 st.sidebar.header("Clustering Parameters")
@@ -30,7 +31,7 @@ if clustering_method == "K-means":
     n_init = st.sidebar.slider("Number of initializations (n_init)", min_value=10, max_value=50, value=29, step=1)
     max_iter = st.sidebar.slider("Maximum iterations (max_iter)", min_value=100, max_value=500, value=382, step=1)
     tol = st.sidebar.slider("Tolerance (tol)", min_value=1e-6, max_value=1e-2, value=1.9266922671867127e-05, format="%.8f", step=1e-6)
-    algorithm = st.sidebar.selectbox("Algorithm", ["lloyd", "elkan"])
+    algorithm = st.sidebar.selectbox("Algorithm", ["elkan", "lloyd"])
 
     # Run K-means clustering with selected parameters
     kmeans = KMeans(
@@ -52,6 +53,11 @@ if clustering_method == "K-means":
     sns.scatterplot(x='PC1', y='PC2', hue='KMeans_Labels', data=df_pca, palette='viridis')
     plt.title('K-means Clustering on Principal Components')
     st.pyplot(plt)
+    
+    # Calculate and display silhouette score
+    silhouette_avg = silhouette_score(df_pca[['PC1', 'PC2']], df_pca['KMeans_Labels'])
+    st.subheader("Silhouette Score for K-means Clustering")
+    st.write(f"Silhouette Score: {silhouette_avg:.4f}")
    
 
 elif clustering_method == "GMM":
@@ -80,6 +86,11 @@ elif clustering_method == "GMM":
     sns.scatterplot(x='PC1', y='PC2', hue='GMM_Labels', data=df_pca, palette='viridis')
     plt.title('GMM Clustering on Principal Components')
     st.pyplot(plt)
+
+    # Calculate and display silhouette score
+    silhouette_avg = silhouette_score(df_pca[['PC1', 'PC2']], gmm_labels)
+    st.subheader("Silhouette Score for GMM Clustering")
+    st.write(f"Silhouette Score: {silhouette_avg:.4f}")
   
 
 # Display the number of records in each cluster
