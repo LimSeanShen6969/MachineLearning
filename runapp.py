@@ -52,7 +52,7 @@ if clustering_method == "K-means":
     sns.scatterplot(x='PC1', y='PC2', hue='KMeans_Labels', data=df_pca, palette='viridis')
     plt.title('K-means Clustering on Principal Components')
     st.pyplot(plt)
-    plt.close()  # Close the figure to free memory
+   
 
 elif clustering_method == "GMM":
     st.sidebar.header("GMM Parameters")
@@ -80,7 +80,7 @@ elif clustering_method == "GMM":
     sns.scatterplot(x='PC1', y='PC2', hue='GMM_Labels', data=df_pca, palette='viridis')
     plt.title('GMM Clustering on Principal Components')
     st.pyplot(plt)
-    plt.close()  # Close the figure to free memory
+  
 
 # Display the number of records in each cluster
 st.subheader("Number of Records in Each Cluster")
@@ -97,13 +97,13 @@ st.subheader("Median Statistics for Each Cluster")
 median_summary = df_clustered.groupby(df_clustered.columns[-1]).median()
 st.write(median_summary)
 
-# Box plots for key features by clusters (hidden initially)
-with st.expander("View Box Plots of Key Features by Cluster"):
-    st.subheader("Box Plots of Key Features by Cluster")
-    key_features = df_clustered.columns.drop(df_clustered.columns[-1])
-    for feature in key_features:
-        plt.figure(figsize=(10, 6))
-        sns.boxplot(x=df_clustered.columns[-1], y=feature, data=df_clustered)
-        plt.title(f'Distribution of {feature} by Cluster')
-        st.pyplot(plt)
-        plt.close()  # Close the figure to free memory
+# # Box plots for key features by clusters (hidden initially)
+# #with st.expander("View Box Plots of Key Features by Cluster"):
+# #    st.subheader("Box Plots of Key Features by Cluster")
+#     key_features = df_clustered.columns.drop(df_clustered.columns[-1])
+#     for feature in key_features:
+#         plt.figure(figsize=(10, 6))
+#         sns.boxplot(x=df_clustered.columns[-1], y=feature, data=df_clustered)
+#         plt.title(f'Distribution of {feature} by Cluster')
+#         st.pyplot(plt)
+#         plt.close()  # Close the figure to free memory
