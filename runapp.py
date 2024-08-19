@@ -106,6 +106,8 @@ elif clustering_method == "Hierarchical":
         metric=metric_input)
     hierarchical_labels = hierarchical.fit_predict(df_pca[['PC1', 'PC2']])
     df_pca['Hierarchical_Labels'] = hierarchical_labels + 1
+    df_clustered = df_cleaned.copy()
+    df_clustered['Cluster_Hierarchical'] = hierarchical_labels + 1
 
     # Visualization of Hierarchical clustering
     st.subheader("Hierarchical Clustering on PCA Results")
@@ -134,6 +136,8 @@ elif clustering_method == "DBSCAN":
 
     dbscan_labels=dbscan.fit_predict(df_pca[['PC1', 'PC2']])
     df_pca['DBSCAN_Labels'] = dbscan_labels + 1
+    df_clustered = df_cleaned.copy()
+    df_clustered['Cluster_DBSCAN'] = dbscan_labels + 1
 
     # Visualization of DBSCAN clustering
     st.subheader("DBSCAN Clustering on PCA Results")
@@ -155,6 +159,8 @@ elif clustering_method == "Spectral":
     spectral = SpectralClustering(n_clusters=4, affinity='nearest_neighbors', random_state=42)
     spectral_labels = spectral.fit_predict(df_pca[['PC1', 'PC2']])
     df_pca['Spectral_Labels'] = spectral_labels + 1
+    df_clustered = df_cleaned.copy()
+    df_clustered['Cluster_Spectral'] = spectral_labels + 1
 
     # Visualization of Spectral clustering
     st.subheader("Spectral Clustering on PCA Results")
