@@ -96,7 +96,7 @@ elif clustering_method == "Hierarchical":
     st.sidebar.header("Hierarchical Parameters")
     n_cluster_input = st.sidebar.slider("Number of clusters (n_clusters)", min_value=3, max_value=11, value=4, step=1)
     linkage_input = st.sidebar.selectbox("Linkage", ["average", "ward", "complete", "single"])
-    metric_input = st.sidebar.selectbox("Metric", ["11", "12", "euclidean", "manhanttan", "cosine"])
+    metric_input = st.sidebar.selectbox("Metric", ["l1", "l2", "euclidean", "manhanttan", "cosine"])
 
 
     # Run Hierarchical clustering with selected parameters
