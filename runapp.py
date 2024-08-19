@@ -57,7 +57,7 @@ if clustering_method == "K-means":
 elif clustering_method == "GMM":
     st.sidebar.header("GMM Parameters")
     n_components = st.sidebar.slider("Number of components (n_components)", min_value=2, max_value=10, value=4, step=1)
-    covariance_type = st.sidebar.selectbox("Covariance type", ["full", "tied", "diag", "spherical"])
+    covariance_type = st.sidebar.selectbox("Covariance type", ["tied", "full", "diag", "spherical"])
     tol = st.sidebar.slider("Tolerance (tol)", min_value=1e-6, max_value=1e-2, value=0.0004118342756036605, format="%.8f", step=1e-6)
     max_iter = st.sidebar.slider("Maximum iterations (max_iter)", min_value=100, max_value=1000, value=776, step=1)
 
