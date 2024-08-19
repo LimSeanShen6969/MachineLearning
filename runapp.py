@@ -43,7 +43,7 @@ df_pca['KMeans_Labels'] = kmeans.fit_predict(df_pca[['PC1', 'PC2']]) + 1
 st.subheader("K-means Clustering on PCA Results")
 plt.figure(figsize=(10, 8))
 sns.scatterplot(x='PC1', y='PC2', hue='KMeans_Labels', data=df_pca, palette='viridis')
-plt.title('K-means Clustering on Principal Components')
+plt.title('K-means Clustering On FIFA 19')
 st.pyplot(plt)
 
 # Add the cluster labels to the cleaned DataFrame
@@ -54,6 +54,11 @@ df_clustered['Cluster_Kmeans'] = kmeans.labels_ + 1
 st.subheader("Number of Records in Each Cluster")
 cluster_counts = df_clustered['Cluster_Kmeans'].value_counts()
 st.write(cluster_counts)
+
+# Display mean statistics for each cluster
+st.subheader("Mean Statistics for Each Cluster")
+summary = df_clustered.groupby('Cluster_Kmeans').mean()
+st.write(summary)
 
 # Display median statistics for each cluster
 st.subheader("Median Statistics for Each Cluster")
