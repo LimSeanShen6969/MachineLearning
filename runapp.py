@@ -123,7 +123,7 @@ elif clustering_method == "Hierarchical":
 
 elif clustering_method == "DBSCAN":
     st.sidebar.header("DBSCAN Parameters")
-    eps_input = st.sidebar.slider("Epsilon Values (eps)", min_value=0.1, max_value=5.0, value=2.065997806552059, format="%.1f", step=0.1)
+    eps_input = st.sidebar.slider("Epsilon Values (eps)", min_value=2.0, max_value=3.0, value=2.065997806552059, format="%.1f", step=0.1)
     min_samples_input = st.sidebar.slider("Min Samples", min_value=10, max_value=20, value=16, step=1)
     algorithm_input = st.sidebar.selectbox("Algorithm", ["brute", "auto", "ball_tree", "kd_tree"])
 
