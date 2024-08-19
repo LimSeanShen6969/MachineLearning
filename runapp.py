@@ -3,7 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.decomposition import PCA
-from sklearn.cluster import KMeans
+from sklearn.cluster import KMeans, DBSCAN, SpectralClustering, AgglomerativeClustering
 from sklearn.mixture import GaussianMixture
 from sklearn.metrics import silhouette_score
 
