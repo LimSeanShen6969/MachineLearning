@@ -65,11 +65,12 @@ st.subheader("Median Statistics for Each Cluster")
 median_summary = df_clustered.groupby('Cluster_Kmeans').median()
 st.write(median_summary)
 
-# Box plots for key features by clusters
-st.subheader("Box Plots of Key Features by Cluster")
-key_features = df_clustered.columns.drop('Cluster_Kmeans')
-for feature in key_features:
-    plt.figure(figsize=(10, 6))
-    sns.boxplot(x='Cluster_Kmeans', y=feature, data=df_clustered)
-    plt.title(f'Distribution of {feature} by Cluster')
-    st.pyplot(plt)
+# Box plots for key features by clusters (hidden initially)
+with st.expander("View Box Plots of Key Features by Cluster"):
+    st.subheader("Box Plots of Key Features by Cluster")
+    key_features = df_clustered.columns.drop('Cluster_Kmeans')
+    for feature in key_features:
+        plt.figure(figsize=(10, 6))
+        sns.boxplot(x='Cluster_Kmeans', y=feature, data=df_clustered)
+        plt.title(f'Distribution of {feature} by Cluster')
+        st.pyplot(plt)
