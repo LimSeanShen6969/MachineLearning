@@ -23,7 +23,6 @@ st.title("Clustering with PCA Visualization")
 st.sidebar.header("Clustering Parameters")
 clustering_method = st.sidebar.selectbox("Choose Clustering Method", ["K-means", "GMM"])
 
-# Parameters for K-means
 if clustering_method == "K-means":
     st.sidebar.header("K-means Parameters")
     n_clusters = st.sidebar.slider("Number of clusters (n_clusters)", min_value=2, max_value=10, value=3, step=1)
@@ -53,6 +52,7 @@ if clustering_method == "K-means":
     sns.scatterplot(x='PC1', y='PC2', hue='KMeans_Labels', data=df_pca, palette='viridis')
     plt.title('K-means Clustering on Principal Components')
     st.pyplot(plt)
+    plt.close()  # Close the figure to free memory
 
 elif clustering_method == "GMM":
     st.sidebar.header("GMM Parameters")
@@ -60,7 +60,7 @@ elif clustering_method == "GMM":
     covariance_type = st.sidebar.selectbox("Covariance type", ["full", "tied", "diag", "spherical"])
     tol = st.sidebar.slider("Tolerance (tol)", min_value=1e-6, max_value=1e-2, value=0.0004118342756036605, format="%.8f", step=1e-6)
     max_iter = st.sidebar.slider("Maximum iterations (max_iter)", min_value=100, max_value=1000, value=776, step=1)
-    
+
     # Run GMM clustering with selected parameters
     gmm = GaussianMixture(
         n_components=n_components, 
@@ -80,6 +80,7 @@ elif clustering_method == "GMM":
     sns.scatterplot(x='PC1', y='PC2', hue='GMM_Labels', data=df_pca, palette='viridis')
     plt.title('GMM Clustering on Principal Components')
     st.pyplot(plt)
+    plt.close()  # Close the figure to free memory
 
 # Display the number of records in each cluster
 st.subheader("Number of Records in Each Cluster")
@@ -105,3 +106,4 @@ with st.expander("View Box Plots of Key Features by Cluster"):
         sns.boxplot(x=df_clustered.columns[-1], y=feature, data=df_clustered)
         plt.title(f'Distribution of {feature} by Cluster')
         st.pyplot(plt)
+        plt.close()  # Close the figure to free memory
