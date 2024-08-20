@@ -3,7 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.decomposition import PCA
-from sklearn.cluster import KMeans, DBSCAN, SpectralClustering, AgglomerativeClustering
+from sklearn.cluster import KMeans, DBSCAN, SpectralClustering, AgglomerativeClustering, Birch
 from sklearn.mixture import GaussianMixture
 from sklearn.metrics import silhouette_score
 
@@ -22,16 +22,16 @@ st.title("Clustering For FIFA 19")
 
 # Sidebar for clustering parameters
 st.sidebar.header("Clustering Parameters")
-clustering_method = st.sidebar.selectbox("Choose Clustering Method", ["K-means", "GMM", "Hierarchical", "DBSCAN", "Spectral"])
+clustering_method = st.sidebar.selectbox("Choose Clustering Method", ["K-means", "GMM", "Hierarchical", "BIRCH", "Spectral"])
 
 if clustering_method == "K-means":
     st.sidebar.header("K-means Parameters")
-    n_clusters = st.sidebar.slider("Number of clusters (n_clusters)", min_value=2, max_value=10, value=3, step=1)
+    n_clusters = st.sidebar.slider("Number of clusters (n_clusters)", min_value=3, max_value=11, value=3, step=1)
     init_method = st.sidebar.selectbox("Initialization method (init)", ["k-means++", "random"])
-    n_init = st.sidebar.slider("Number of initializations (n_init)", min_value=10, max_value=50, value=29, step=1)
-    max_iter = st.sidebar.slider("Maximum iterations (max_iter)", min_value=100, max_value=500, value=382, step=1)
-    tol = st.sidebar.slider("Tolerance (tol)", min_value=1e-6, max_value=1e-2, value=1.9266922671867127e-05, format="%.8f", step=1e-6)
-    algorithm = st.sidebar.selectbox("Algorithm", ["elkan", "lloyd"])
+    n_init = st.sidebar.slider("Number of initializations (n_init)", min_value=10, max_value=31, value=29, step=1)
+    max_iter = st.sidebar.slider("Maximum iterations (max_iter)", min_value=300, max_value=1001, value=961, step=1)
+    tol = st.sidebar.slider("Tolerance (tol)", min_value=1e-5, max_value=1e-3, value=0.0006111202966133412, format="%.8f", step=1e-6)
+    algorithm = st.sidebar.selectbox("Algorithm", ["lloyd", "elkan"])
 
     # Run K-means clustering with selected parameters
     kmeans = KMeans(
@@ -62,10 +62,10 @@ if clustering_method == "K-means":
 
 elif clustering_method == "GMM":
     st.sidebar.header("GMM Parameters")
-    n_components = st.sidebar.slider("Number of components (n_components)", min_value=2, max_value=10, value=4, step=1)
-    covariance_type = st.sidebar.selectbox("Covariance type", ["tied", "full", "diag", "spherical"])
-    tol = st.sidebar.slider("Tolerance (tol)", min_value=1e-6, max_value=1e-2, value=0.0004118342756036605, format="%.8f", step=1e-6)
-    max_iter = st.sidebar.slider("Maximum iterations (max_iter)", min_value=100, max_value=1000, value=776, step=1)
+    n_components = st.sidebar.slider("Number of components (n_components)", min_value=3, max_value=11, value=3, step=1)
+    covariance_type = st.sidebar.selectbox("Covariance type", ["spherical", "full", "diag", "tied"])
+    tol = st.sidebar.slider("Tolerance (tol)", min_value=1e-5, max_value=1e-3, value=0.0001253762837410868, format="%.8f", step=1e-6)
+    max_iter = st.sidebar.slider("Maximum iterations (max_iter)", min_value=100, max_value=1001, value=487, step=1)
 
     # Run GMM clustering with selected parameters
     gmm = GaussianMixture(
@@ -121,42 +121,41 @@ elif clustering_method == "Hierarchical":
     st.subheader("Silhouette Score for Hierarchical Clustering")
     st.write(f"Silhouette Score: {silhouette_avg:.4f}")
 
-elif clustering_method == "DBSCAN":
-    st.sidebar.header("DBSCAN Parameters")
-    eps_input = st.sidebar.slider("Epsilon Values (eps)", min_value=2.0, max_value=3.0, value=2.065997806552059, format="%.1f", step=0.1)
-    min_samples_input = st.sidebar.slider("Min Samples", min_value=10, max_value=20, value=16, step=1)
-    algorithm_input = st.sidebar.selectbox("Algorithm", ["brute", "auto", "ball_tree", "kd_tree"])
+elif clustering_method == "BIRCH":
+    st.sidebar.header("BIRCH Parameters")
+    threshold_input = st.sidebar.slider("Threshold", min_value=0.1, max_value=1.0, value=0.9602612659536289, format="%.1f", step=0.1)
+    branching_factor_input = st.sidebar.slider("Branching Factor", min_value=10, max_value=100, value=35, step=1)
+    n_cluster_input = st.sidebar.slider("No. of Cluster", min_value=3, max_value=10, value=3, step=1)
 
 
-    # Run Hierarchical clustering with selected parameters
-    dbscan = DBSCAN(
-        eps=eps_input, 
-        min_samples=min_samples_input,
-        algorithm=algorithm_input)
-
-    dbscan_labels=dbscan.fit_predict(df_pca[['PC1', 'PC2']])
-    df_pca['DBSCAN_Labels'] = dbscan_labels + 1
+    # Run BIRCH clustering with selected parameters
+    birch = BIRCH(
+        threshold=threshold_input, 
+        branching_factor=branching_factor_input,
+        n_clusters=n_cluster_input)
+    birch_labels = birch.fit_predict(df_pca[['PC1', 'PC2']])
+    df_pca['Birch_Labels'] = birch_labels + 1
     df_clustered = df_cleaned.copy()
-    df_clustered['Cluster_DBSCAN'] = dbscan_labels + 1
+    df_clustered['Cluster_Birch'] = birch_labels + 1
 
-    # Visualization of DBSCAN clustering
-    st.subheader("DBSCAN Clustering on PCA Results")
+    # Visualization of BIRCH clustering
+    st.subheader("BIRCH Clustering on PCA Results")
     plt.figure(figsize=(10, 8))
-    sns.scatterplot(x='PC1', y='PC2', hue='DBSCAN_Labels', data=df_pca, palette='viridis')
-    plt.title('DBSCAN Clustering on Principal Components')
+    sns.scatterplot(x='PC1', y='PC2', hue='Birch_Labels', data=df_pca, palette='viridis')
+    plt.title('Birch Clustering on Principal Components')
     st.pyplot(plt)
 
     # Calculate and display silhouette score
-    silhouette_avg = silhouette_score(df_pca[['PC1', 'PC2']], dbscan_labels)
-    st.subheader("Silhouette Score for DBSCAN Clustering")
+    silhouette_avg = silhouette_score(df_pca[['PC1', 'PC2']], birch_labels)
+    st.subheader("Silhouette Score for BIRCH Clustering")
     st.write(f"Silhouette Score: {silhouette_avg:.4f}")
 
 elif clustering_method == "Spectral":
     st.sidebar.header("DBSCAN Parameters")
     affinity_input = st.sidebar.selectbox("Affinity", ["nearest_neighbors", "rbf"])
 
-    # Run Hierarchical clustering with selected parameters
-    spectral = SpectralClustering(n_clusters=4, affinity='nearest_neighbors', random_state=42)
+    # Run SPECTRAL clustering with selected parameters
+    spectral = SpectralClustering(n_clusters=4, affinity=affinity_input, random_state=42)
     spectral_labels = spectral.fit_predict(df_pca[['PC1', 'PC2']])
     df_pca['Spectral_Labels'] = spectral_labels + 1
     df_clustered = df_cleaned.copy()
