@@ -123,7 +123,7 @@ elif clustering_method == "Hierarchical":
 
 elif clustering_method == "BIRCH":
     st.sidebar.header("BIRCH Parameters")
-    threshold_input = st.sidebar.slider("Threshold", min_value=0.1, max_value=1.0, value=0.9602612659536289, format="%.1f", step=0.1)
+    threshold_input = st.sidebar.slider("Threshold", min_value=0.1, max_value=1.0, value=0.9602612659536289, format="%.01f", step=0.01)
     branching_factor_input = st.sidebar.slider("Branching Factor", min_value=10, max_value=100, value=35, step=1)
     n_cluster_input = st.sidebar.slider("No. of Cluster", min_value=3, max_value=10, value=3, step=1)
 
