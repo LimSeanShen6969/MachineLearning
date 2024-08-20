@@ -3,7 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.decomposition import PCA
-from sklearn.cluster import KMeans, DBSCAN, SpectralClustering, AgglomerativeClustering, Birch
+from sklearn.cluster import KMeans, SpectralClustering, AgglomerativeClustering, Birch
 from sklearn.mixture import GaussianMixture
 from sklearn.metrics import silhouette_score
 
@@ -129,7 +129,7 @@ elif clustering_method == "BIRCH":
 
 
     # Run BIRCH clustering with selected parameters
-    birch = BIRCH(
+    birch = Birch(
         threshold=threshold_input, 
         branching_factor=branching_factor_input,
         n_clusters=n_cluster_input)
