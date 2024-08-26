@@ -50,7 +50,7 @@ if clustering_method == "K-means":
     # Visualization of K-means clusters
     st.subheader("K-means Clustering on PCA Results")
     plt.figure(figsize=(10, 8))
-    sns.scatterplot(x='PC1', y='PC2', hue='KMeans_Labels', data=df_pca, palette='viridis')
+    sns.scatterplot(x='PC1', y='PC2', hue='KMeans_Labels', data=df_pca, palette='bright')
     plt.title('K-means Clustering on Principal Components')
     st.pyplot(plt)
     
@@ -96,7 +96,7 @@ elif clustering_method == "Hierarchical":
     st.sidebar.header("Hierarchical Parameters")
     n_cluster_input = st.sidebar.slider("Number of clusters (n_clusters)", min_value=3, max_value=11, value=4, step=1)
     linkage_input = st.sidebar.selectbox("Linkage", ["average", "ward", "complete", "single"])
-    metric_input = st.sidebar.selectbox("Metric", ["l1", "l2", "euclidean", "manhattan", "cosine"])
+    metric_input = st.sidebar.selectbox("Metric", ["l1", "l2", "euclidean", "manhanttan", "cosine"])
 
 
     # Run Hierarchical clustering with selected parameters
@@ -112,7 +112,7 @@ elif clustering_method == "Hierarchical":
     # Visualization of Hierarchical clustering
     st.subheader("Hierarchical Clustering on PCA Results")
     plt.figure(figsize=(10, 8))
-    sns.scatterplot(x='PC1', y='PC2', hue='Hierarchical_Labels', data=df_pca, palette='viridis')
+    sns.scatterplot(x='PC1', y='PC2', hue='Hierarchical_Labels', data=df_pca, palette='dark')
     plt.title('Hierarchical Clustering on Principal Components')
     st.pyplot(plt)
 
@@ -141,7 +141,7 @@ elif clustering_method == "BIRCH":
     # Visualization of BIRCH clustering
     st.subheader("BIRCH Clustering on PCA Results")
     plt.figure(figsize=(10, 8))
-    sns.scatterplot(x='PC1', y='PC2', hue='Birch_Labels', data=df_pca, palette='viridis')
+    sns.scatterplot(x='PC1', y='PC2', hue='Birch_Labels', data=df_pca, palette='flare')
     plt.title('Birch Clustering on Principal Components')
     st.pyplot(plt)
 
@@ -151,7 +151,7 @@ elif clustering_method == "BIRCH":
     st.write(f"Silhouette Score: {silhouette_avg:.4f}")
 
 elif clustering_method == "Spectral":
-    st.sidebar.header("Spectral Parameters")
+    st.sidebar.header("DBSCAN Parameters")
     affinity_input = st.sidebar.selectbox("Affinity", ["nearest_neighbors", "rbf"])
 
     # Run SPECTRAL clustering with selected parameters
@@ -164,7 +164,7 @@ elif clustering_method == "Spectral":
     # Visualization of Spectral clustering
     st.subheader("Spectral Clustering on PCA Results")
     plt.figure(figsize=(10, 8))
-    sns.scatterplot(x='PC1', y='PC2', hue='Spectral_Labels', data=df_pca, palette='viridis')
+    sns.scatterplot(x='PC1', y='PC2', hue='Spectral_Labels', data=df_pca, palette='crest')
     plt.title('Spectral Clustering on Principal Components')
     st.pyplot(plt)
 
