@@ -50,7 +50,7 @@ if clustering_method == "K-means":
     # Visualization of K-means clusters
     st.subheader("K-means Clustering on PCA Results")
     plt.figure(figsize=(10, 8))
-    sns.scatterplot(x='PC1', y='PC2', hue='KMeans_Labels', data=df_pca, palette='bright')
+    sns.scatterplot(x='PC1', y='PC2', hue='KMeans_Labels', data=df_pca, palette='viridis')
     plt.title('K-means Clustering on Principal Components')
     st.pyplot(plt)
     
@@ -83,7 +83,7 @@ elif clustering_method == "GMM":
     # Visualization of GMM clusters
     st.subheader("GMM Clustering on PCA Results")
     plt.figure(figsize=(10, 8))
-    sns.scatterplot(x='PC1', y='PC2', hue='GMM_Labels', data=df_pca, palette='viridis')
+    sns.scatterplot(x='PC1', y='PC2', hue='GMM_Labels', data=df_pca, palette='bright')
     plt.title('GMM Clustering on Principal Components')
     st.pyplot(plt)
 
