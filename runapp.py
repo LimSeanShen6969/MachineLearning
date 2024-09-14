@@ -151,7 +151,7 @@ elif clustering_method == "BIRCH":
     st.write(f"Silhouette Score: {silhouette_avg:.4f}")
 
 elif clustering_method == "Spectral":
-    st.sidebar.header("DBSCAN Parameters")
+    st.sidebar.header("Spectral Parameters")
     affinity_input = st.sidebar.selectbox("Affinity", ["nearest_neighbors", "rbf"])
 
     # Run SPECTRAL clustering with selected parameters
